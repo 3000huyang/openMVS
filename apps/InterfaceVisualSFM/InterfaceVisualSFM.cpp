@@ -142,9 +142,9 @@ bool Initialize(size_t argc, LPCTSTR* argv)
 	Util::ensureValidPath(OPT::strOutputFileName);
 	Util::ensureUnifySlash(OPT::strOutputFileName);
 	Util::ensureUnifySlash(OPT::strOutputImageFolder);
-	Util::ensureDirectorySlash(OPT::strOutputImageFolder);
+	Util::ensureFolderSlash(OPT::strOutputImageFolder);
 	if (OPT::strOutputFileName.IsEmpty())
-		OPT::strOutputFileName = Util::getFullFileName(OPT::strInputFileName) + MVS_EXT;
+		OPT::strOutputFileName = Util::getFileFullName(OPT::strInputFileName) + MVS_EXT;
 
 	// initialize global options
 	Process::setCurrentProcessPriority((Process::Priority)OPT::nProcessPriority);
@@ -374,19 +374,19 @@ int main(int argc, LPCTSTR* argv)
 			#pragma omp flush (bAbort)
 			continue;
 			#else
-			return false;
+			return EXIT_FAILURE;
 			#endif
 		}
 		MVS::UndistortImage(imageData.camera, cameraNVM.GetNormalizedMeasurementDistortion(), imageData.image, imageData.image);
 		const String name(pathData + String::FormatString(_T("%05u.png"), i));
-		Util::ensureDirectory(name);
+		Util::ensureFolder(name);
 		if (!imageData.image.Save(name)) {
 			#ifdef _USE_OPENMP
 			bAbort = true;
 			#pragma omp flush (bAbort)
 			continue;
 			#else
-			return false;
+			return EXIT_FAILURE;
 			#endif
 		}
 		imageData.ReleaseImage();

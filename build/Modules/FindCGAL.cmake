@@ -7,9 +7,9 @@
 #  CGAL_LIBS             - CGAL libraries
 #  CGAL_VERSION          - MAJOR.MINOR
 #----------------------------------------------------------
- 
+
 set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true)
- 
+
 if(NOT CGAL_DIR)
   # Get the system search path as a list.
   if(UNIX)
@@ -21,21 +21,22 @@ if(NOT CGAL_DIR)
   # Construct a set of paths relative to the system search path.
   set(CGAL_DIR_SEARCH "")
   foreach(dir ${CGAL_DIR_SEARCH2})
-    set(CGAL_DIR_SEARCH ${CGAL_DIR_SEARCH} ${dir}/../lib/CGAL )
+    set(CGAL_DIR_SEARCH ${CGAL_DIR_SEARCH} ${dir}/../lib/CGAL)
   endforeach()
+  set(CGAL_DIR_SEARCH ${CGAL_DIR_SEARCH} "lib" "lib64")
 
   #
   # Look for an installation or build tree.
   #
   find_path(CGAL_DIR "CGALConfig.cmake"
     # Look for an environment variable CGAL_DIR.
-    HINTS "${CGAL_ROOT}" "$ENV{CGAL_ROOT}" "$ENV{CGAL_DIR}"
+    HINTS "${CGAL_ROOT}" "$ENV{CGAL_ROOT}" "$ENV{CGAL_DIR}" "$ENV{PROGRAMFILES}" "$ENV{PROGRAMW6432}"
 
     # Look in places relative to the system executable search path.
     ${CGAL_DIR_SEARCH}
 
     # Look in standard UNIX install locations.
-    PATHS "$ENV{PROGRAMFILES}" "$ENV{PROGRAMW6432}" "/usr" "/usr/local" "/usr/share" "/usr/local/share" "/usr/lib/cmake" "/usr/local/lib/cmake" "/usr/include" "/usr/lib/x86_64-linux-gnu/cmake"
+    PATHS "/usr" "/usr/local" "/usr/share" "/usr/local/share" "/usr/lib/cmake" "/usr/local/lib/cmake" "/usr/include" "/usr/lib/x86_64-linux-gnu/cmake"
 
     # Read from the CMakeSetup registry entries.  It is likely that
     # CGAL will have been recently built.
@@ -50,7 +51,7 @@ if(NOT CGAL_DIR)
     [HKEY_CURRENT_USER\\Software\\Kitware\\CMakeSetup\\Settings\\StartPath;WhereBuild9]
     [HKEY_CURRENT_USER\\Software\\Kitware\\CMakeSetup\\Settings\\StartPath;WhereBuild10]
 	
-	PATH_SUFFIXES "CGAL"
+	PATH_SUFFIXES "CGAL" "share" "share/cgal" "share/cmake" "share/cmake/cgal"
 	
 	DOC "Root directory of CGAL library"
   )
