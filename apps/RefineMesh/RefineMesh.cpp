@@ -233,6 +233,28 @@ int main(int argc, LPCTSTR* argv)
 		VERBOSE("error: empty initial mesh");
 		return EXIT_FAILURE;
 	}
+
+	bool bAbort(false);
+//#pragma omp parallel for
+	for (int_t idx = 0; idx < (int_t)scene.images.GetSize(); ++idx) 
+	{
+#//pragma omp flush (bAbort)
+		if (bAbort)
+			continue;
+		const uint32_t idxImage((uint32_t)idx);
+		Image& imageData = scene.images[idxImage];
+		if (!imageData.IsValid())
+			continue;
+
+
+		// select neighbor views
+		if (imageData.neighbors.IsEmpty()) {
+			IndexArr points;
+			scene.SelectNeighborViews(idxImage, points);
+		}
+		if (bAbort)
+			return EXIT_FAILURE;
+	}
 	TD_TIMER_START();
 	#ifdef _USE_CUDA
 	if (!OPT::bUseCUDA ||

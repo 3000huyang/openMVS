@@ -1375,7 +1375,7 @@ bool Mesh::LoadOBJ(const String& fileName)
 	// open and parse OBJ file
 	ObjModel model;
 	if (!model.Load(fileName)) {
-		DEBUG_EXTRA("error: invalid OBJ file");
+		DEBUG_EXTRA("error: invalid OBJ file",fileName);
 		return false;
 	}
 	if (model.get_vertices().empty() || model.get_groups().size() != 1 || model.get_groups()[0].faces.empty()) {

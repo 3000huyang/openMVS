@@ -523,6 +523,10 @@ bool Scene::SelectNeighborViews(uint32_t ID, IndexArr& points, unsigned nMinView
 			}
 		}
 		ASSERT(pointsA.GetSize() == pointsB.GetSize() && pointsA.GetSize() <= score.points);
+		if (pointsA.IsEmpty()) {
+			neighbors.RemoveLast();
+			continue;
+		}
 		const float areaA(ComputeCoveredArea<float, 2, 16, false>((const float*)pointsA.Begin(), pointsA.GetSize(), boundsA.ptr()));
 		const float areaB(ComputeCoveredArea<float, 2, 16, false>((const float*)pointsB.Begin(), pointsB.GetSize(), boundsB.ptr()));
 		const float area(MINF(areaA, areaB));

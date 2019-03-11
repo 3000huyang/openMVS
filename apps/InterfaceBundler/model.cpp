@@ -562,6 +562,7 @@ namespace insight
 				Vec3 C;
 				if (readTrasformFile(C)) {
 					center = C;
+					std::cout << "read transform " << C << std::endl;
 				}
 			}
 
@@ -619,11 +620,13 @@ namespace insight
 
 		bool Model::readTrasformFile(Vec3 &center)
 		{
-			std::string transformFile = stlplus::create_filespec(_workSpacePath, "transformFile.txt");
+			std::string transformFile = stlplus::create_filespec(_workSpacePath, "transform.txt");
 
 			std::ifstream transformIfs(transformFile);
 			if (!transformIfs) return false;
 			std::string s;
+			std::getline(transformIfs, s);
+			std::cout << s << std::endl;
 			std::getline(transformIfs, s);
 			std::cout << s << std::endl;
 			std::getline(transformIfs, s);
